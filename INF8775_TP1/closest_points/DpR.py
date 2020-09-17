@@ -1,8 +1,8 @@
 import sys
 import time
-from utils import MAX_DIST, distance
+from closest_points.utils import distance
 
-from brute_force import brute_force
+from closest_points.brute_force import brute_force
 sys.setrecursionlimit(1500)
 
 
@@ -13,7 +13,6 @@ def find_min_strip(points_y, d):
         for pt2 in points_y[(pos+1):(min(l, pos+7))]:
             strip_min = min(strip_min, distance(pt1, pt2))
     return strip_min   
-
 
 
 '''
@@ -64,6 +63,7 @@ def DpR(points_x, points_y, seuil_recur):
     min_dist = min(d, min_strip)
 
     return min_dist
+
 
 def execute_DpR(sorted_points_x, sorted_points_y, seuil_recur):
     start = time.time()

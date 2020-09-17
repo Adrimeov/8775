@@ -1,5 +1,6 @@
 import time
-from utils import MAX_DIST, distance
+from closest_points.utils import MAX_DIST, distance
+
 
 '''
 Algorithme Force Brute

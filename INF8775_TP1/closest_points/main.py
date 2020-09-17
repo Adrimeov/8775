@@ -1,12 +1,9 @@
 import random
-import math
 import sys
-import time
-import csv
 
-from brute_force import execute_brute_force
-from DpR import execute_DpR
-from utils import GRID_SIZE
+from closest_points.brute_force import execute_brute_force
+from closest_points.DpR import execute_DpR
+from closest_points.utils import GRID_SIZE
 
 ALGO = sys.argv[1] # Algo à utiliser DPR ou BF
 NB_POINTS = int(sys.argv[2]) # Nombre de points à générer
@@ -29,7 +26,6 @@ De plus, vous devez faire en sorte que l'interface du tp.sh soit
 compatible avec ce code (par exemple l'utilisation de flag -e, -a, (p et -t)).
 --------------------------------------------------------------------
  '''
-
 def main(algo, nb_points):
     POINTS = generate_points(nb_points)
     sorted_points_x = sorted(POINTS, key=lambda x: x[0])
