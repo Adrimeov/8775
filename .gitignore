@@ -51,6 +51,8 @@ Temporary Items
 
 # User-specific stuff
 .idea/**/workspace.xml
+.idea/workspace.xml
+.idea/vcs.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
@@ -173,5 +175,8 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# Providd by DpC project
+__pycache__/*
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm,windows,macos,linux
