@@ -1,5 +1,10 @@
 import sys
 
+from closest_points.brute_force import execute_brute_force
+from closest_points.DpR import execute_DpR
+from copy import deepcopy
+
+NB_REP = 10
 
 if __name__ == "__main__":
 
@@ -30,6 +35,17 @@ if __name__ == "__main__":
         n = int(file.readline())
 
         for line in file:
-            points.append(tuple(line.split()))
+            points.append(tuple([int(a) for a in line.split()]))
 
-    print(points)
+    points_x = deepcopy(points)
+    points_x.sort(key=lambda tup: tup[0])
+    points_y = deepcopy(points)
+    points_y.sort(key=lambda tup: tup[1])
+
+    # time = execute_DpR(points_x, points_y, 10)
+    #
+    # print(time)
+    #
+    # time = execute_brute_force(points_x)
+    #
+    # print(time)
