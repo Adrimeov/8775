@@ -42,10 +42,12 @@ if __name__ == "__main__":
     points_y = deepcopy(points)
     points_y.sort(key=lambda tup: tup[1])
 
-    # time = execute_DpR(points_x, points_y, 10)
-    #
-    # print(time)
-    #
-    # time = execute_brute_force(points_x)
-    #
-    # print(time)
+    average_time = 0
+
+    for i in range(NB_REP):
+        time = execute_DpR(points_x, points_y, 5)
+        print("Run #" + str(i + 1) + ": " + str(time) + "s")
+        average_time += time
+
+    average_time /= NB_REP
+    print("Average time: " + str(average_time) + "s")
