@@ -1,7 +1,8 @@
-import subprocess
+import sys
 
 from main import execute_closest_points
 from gen import generate_samples
+
 
 NB_REPETITIONS = 100
 MAX_SAMPLES = 1000000
@@ -10,6 +11,31 @@ DATA_FILE_NAME = "generated_data.txt"
 
 nb_samples = 100
 sample_time_pairs = []
+
+
+algo = None
+algo_name = ""
+
+if len(sys.argv) <= 1:
+    exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le '
+         'nombre de points à générer et le nom du fichier de sortie.')
+
+if len(sys.argv) > 2:
+    exit('Erreur: Trop d\'arguments.')
+
+# TODO: selectionner l'argument Algo
+try:
+    algo_name = str(sys.argv[1])
+    if algo_name == "brute_force":
+        algo = execute_closest_points
+    elif algo_name == "recursif":
+        algo = execute_closest_points
+    elif algo_name == "seuil":
+        algo = execute_closest_points
+    else:
+        raise ValueError()
+except:
+    exit('Erreur: Le premier argument (nombre de points) doit être un entier positif.')
 
 while nb_samples <= MAX_SAMPLES:
 
