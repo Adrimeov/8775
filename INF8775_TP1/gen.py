@@ -30,30 +30,36 @@
 import random
 import sys
 
-n = -1
-fn = ''
 
-if (len(sys.argv) <= 2):
-    exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le \
-nombre de points à générer et le nom du fichier de sortie.')
+def generate_samples(n, fn):
+    c = 1000000
+    points = [[random.randint(0, c), random.randint(0, c)] for _ in range(n)]
 
-if (len(sys.argv) > 3):
-    exit('Erreur: Trop d\'arguments.')
+    with open(fn, 'w') as f:
+        f.write(str(n) + '\n')
+        for i in range(n):
+            f.write(str(points[i][0]) + ' ' + str(points[i][1]) + '\n')
+    f.close()
 
-try:
-    n = int(sys.argv[1])
-    if (n <= 0):
-        raise ValueError()
-except:
-    exit('Erreur: Le premier argument (nombre de points) doit être \
-un entier positif.')
 
-fn = sys.argv[2]
-c = 1000000
-points = [[random.randint(0, c), random.randint(0, c)] for _ in range(n)]
+if __name__ == "main":
+    n = -1
+    fn = ''
 
-with open(fn, 'w') as f:
-    f.write(str(n) + '\n')
-    for i in range(n):
-        f.write(str(points[i][0]) + ' ' + str(points[i][1]) + '\n')
-f.close()
+    if (len(sys.argv) <= 2):
+        exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le \
+    nombre de points à générer et le nom du fichier de sortie.')
+
+    if (len(sys.argv) > 3):
+        exit('Erreur: Trop d\'arguments.')
+
+    try:
+        n = int(sys.argv[1])
+        if (n <= 0):
+            raise ValueError()
+    except:
+        exit('Erreur: Le premier argument (nombre de points) doit être \
+    un entier positif.')
+
+    fn = sys.argv[2]
+    generate_samples(m, fn)
