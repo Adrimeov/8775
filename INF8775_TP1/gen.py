@@ -31,7 +31,7 @@ import random
 import sys
 
 n = -1
-file_name = ''
+fn = ''
 
 if (len(sys.argv) <= 2):
     exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le \
@@ -48,11 +48,11 @@ except:
     exit('Erreur: Le premier argument (nombre de points) doit être \
 un entier positif.')
 
-file_name = sys.argv[2]
+fn = sys.argv[2]
 c = 1000000
 points = [[random.randint(0, c), random.randint(0, c)] for _ in range(n)]
 
-with open(file_name, 'w') as f:
+with open(fn, 'w') as f:
     f.write(str(n) + '\n')
     for i in range(n):
         f.write(str(points[i][0]) + ' ' + str(points[i][1]) + '\n')
