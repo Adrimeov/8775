@@ -42,7 +42,7 @@ def generate_samples(n, fn):
     f.close()
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     n = -1
     fn = ''
 
@@ -62,4 +62,4 @@ if __name__ == "main":
     un entier positif.')
 
     fn = sys.argv[2]
-    generate_samples(m, fn)
+    generate_samples(n, fn)

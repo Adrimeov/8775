@@ -34,7 +34,7 @@ if __name__ == "__main__":
 
     file_name = ""
 
-    if (len(sys.argv) <= 1):
+    if len(sys.argv) <= 1:
         exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le \
               nombre de points à générer et le nom du fichier de sortie.')
 
