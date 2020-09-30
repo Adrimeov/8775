@@ -4,8 +4,8 @@ from main import execute_closest_points
 from gen import generate_samples
 
 
-NB_REPETITIONS = 100
-MAX_SAMPLES = 1000000
+NB_REPETITIONS = 10
+MAX_SAMPLES = 100000
 SAMPLES_FILE_NAME = "samples.txt"
 
 nb_samples = 100
@@ -36,10 +36,10 @@ except:
     exit('Erreur: Le premier argument (nombre de points) doit être un entier positif.')
 
 while nb_samples <= MAX_SAMPLES:
+    generate_samples(nb_samples, SAMPLES_FILE_NAME)
 
     for i in range(NB_REPETITIONS):
         average_time = 0
-        generate_samples(nb_samples, SAMPLES_FILE_NAME)
         average_time += execute_closest_points(SAMPLES_FILE_NAME, algo_name)
 
     average_time /= NB_REPETITIONS
@@ -53,4 +53,4 @@ data_file_name = "generated_data_" + algo_name + ".txt"
 with open(data_file_name, "w") as file:
     file.write(algo_name)
     for sample_time_pair in sample_time_pairs:
-        file.write(str(sample_time_pair[0]) + " " + str(sample_time_pair[1]))
+        file.write(str(sample_time_pair[0]) + " " + str(sample_time_pair[1]) + "\n")
