@@ -41,7 +41,9 @@ def generate_samples(n, fn):
             f.write(str(points[i][0]) + ' ' + str(points[i][1]) + '\n')
     f.close()
 
+try:
 
+except
 if __name__ == "__main__":
     n = -1
     fn = ''
