@@ -2,6 +2,7 @@ import time
 from closest_points.utils import MAX_DIST, distance
 
 
+
 '''
 Algorithme Force Brute
 Si le nombre de points est suffisamment petit, on préfère utiliser cet algorithme.

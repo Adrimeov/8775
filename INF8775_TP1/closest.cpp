@@ -56,12 +56,14 @@ float bruteForce(Point P[], int n)
     return min;
 }
 
-float callBruteForce(vector<Point> P)
+float callBruteForce(vector<Point> P, vector<Point> unUsed, int unUsed1, int unUsed2)
 {
     Point* p = &P[0];
 
     return bruteForce(p, P.size());
 }
+
+
 
 float min(float x, float y)
 {
@@ -83,10 +85,10 @@ float stripClosest(Point strip[], int size, float d)
     return min;
 }
 
-float closestUtil(Point Px[], Point Py[], int n)
+float closestUtil(Point Px[], Point Py[], int n, int rec)
 {
     // If there are 2 or 3 points, then use brute force
-    if (n <= 3)
+    if (n <= rec)
         return bruteForce(Px, n);
 
     // Find the middle point
@@ -110,8 +112,8 @@ float closestUtil(Point Px[], Point Py[], int n)
     // Consider the vertical line passing through the middle point
     // calculate the smallest distance dl on left of middle point and
     // dr on right side
-    float dl = closestUtil(Px, Pyl, mid);
-    float dr = closestUtil(Px + mid, Pyr, n-mid);
+    float dl = closestUtil(Px, Pyl, mid, rec);
+    float dr = closestUtil(Px + mid, Pyr, n-mid, rec);
 
     // Find the smaller of two distances
     float d = min(dl, dr);
@@ -129,29 +131,39 @@ float closestUtil(Point Px[], Point Py[], int n)
     return stripClosest(strip, j, d);
 }
 
-float closest(Point P[], int n)
+float call_closest(vector<Point> Px, vector<Point> Py, int recursion, int nb_point)
 {
-    Point Px[n];
-    Point Py[n];
-    for (int i = 0; i < n; i++)
-    {
-        Px[i] = P[i];
-        Py[i] = P[i];
-    }
+    Point* px = &Px[0];
+    Point* py = &Py[0];
 
-    qsort(Px, n, sizeof(Point), compareX);
-    qsort(Py, n, sizeof(Point), compareY);
-
-    // Use recursive function closestUtil() to find the smallest distance
-    return closestUtil(Px, Py, n);
+    return closestUtil(px, py, nb_point, recursion);
 }
 
-float find_closest_distance()
-{
-    Point P[] = {{2, 3}, {12, 30}, {40, 50}, {5, 1}, {12, 10}, {3, 4}};
-    int n = sizeof(P) / sizeof(P[0]);
-    return closest(P, n);
-}
+
+
+//float closest(Point P[], int n)
+//{
+//    Point Px[n];
+//    Point Py[n];
+//    for (int i = 0; i < n; i++)
+//    {
+//        Px[i] = P[i];
+//        Py[i] = P[i];
+//    }
+//
+//    qsort(Px, n, sizeof(Point), compareX);
+//    qsort(Py, n, sizeof(Point), compareY);
+//
+//    // Use recursive function closestUtil() to find the smallest distance
+//    return closestUtil(Px, Py, n);
+//}
+
+//float find_closest_distance()
+//{
+//    Point P[] = {{2, 3}, {12, 30}, {40, 50}, {5, 1}, {12, 10}, {3, 4}};
+//    int n = sizeof(P) / sizeof(P[0]);
+//    return closest(P, n);
+//}
 
 PYBIND11_MODULE(closest, m) {
 
@@ -162,7 +174,7 @@ PYBIND11_MODULE(closest, m) {
             .def("getX", &Point::getX)
             .def("getY", &Point::getY);
 
-    m.def("closest", &find_closest_distance, "Finds the closest distance between two points in a list");
-    m.def("brute_force", &bruteForce, "Finds the closest distance between two points in a list");
+//    m.def("closest", &find_closest_distance, "Finds the closest distance between two points in a list");
+    m.def("call_recursive", &call_closest, "Finds the closest distance between two points in a list");
     m.def("call_brute_force", &callBruteForce, "Taco Bell");
 }
