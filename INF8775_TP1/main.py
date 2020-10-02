@@ -41,13 +41,14 @@ def execute_closest_points(path=None, algo="brute", timer=False, distance=False,
     start = time.time()
     min_dpr = algo_dictionary[algo](cpp_points_x, cpp_points_y, recursion, nb_points)
     end = time.time()
+    total_time = end - start
 
     if bool(timer):
-        print("Time to compute: " + str(end - start) + "s")
+        print("Time to compute: " + str(total_time) + "s")
     if distance:
         print("Minimal distance: " + str(min_dpr) + "s")
 
-    return time
+    return total_time
 
 
 if __name__ == "__main__":

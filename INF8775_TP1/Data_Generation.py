@@ -4,7 +4,7 @@ from main import execute_closest_points
 from gen import generate_samples
 
 
-NB_REPETITIONS = 10
+NB_REPETITIONS = 5
 MAX_SAMPLES = 100000
 SAMPLES_FILE_NAME = "samples.txt"
 
@@ -24,22 +24,15 @@ if len(sys.argv) > 2:
 
 try:
     algo_name = str(sys.argv[1])
-    if algo_name == "brute":
-        algo = execute_closest_points
-    elif algo_name == "recursif":
-        algo = execute_closest_points
-    elif algo_name == "seuil":
-        algo = execute_closest_points
-    else:
-        raise ValueError()
 except:
     exit('Erreur: Le premier argument (nombre de points) doit être un entier positif.')
 
 while nb_samples <= MAX_SAMPLES:
-    generate_samples(nb_samples, SAMPLES_FILE_NAME)
+    average_time = 0
 
     for i in range(NB_REPETITIONS):
-        average_time = 0
+        # Generating new samples each iterations
+        generate_samples(nb_samples, SAMPLES_FILE_NAME)
         average_time += execute_closest_points(SAMPLES_FILE_NAME, algo_name)
 
     average_time /= NB_REPETITIONS
@@ -51,6 +44,8 @@ while nb_samples <= MAX_SAMPLES:
 data_file_name = "generated_data_" + algo_name + ".txt"
 
 with open(data_file_name, "w") as file:
-    file.write(algo_name)
+    file.write(algo_name + "\n")
+    file.write(str(NB_REPETITIONS) + "\n")
+
     for sample_time_pair in sample_time_pairs:
         file.write(str(sample_time_pair[0]) + " " + str(sample_time_pair[1]) + "\n")
