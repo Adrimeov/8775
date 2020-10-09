@@ -5,7 +5,7 @@ from gen import generate_samples
 
 
 NB_REPETITIONS = 3
-MAX_SAMPLES = 500000
+MAX_SAMPLES = 500000000
 SAMPLES_FILE_NAME = "samples.txt"
 
 nb_samples = 100
@@ -14,22 +14,22 @@ sample_time_pairs = []
 
 
 algo = None
-algo_name = ""
+algo_name = "brute"
 
-if len(sys.argv) <= 1:
-    exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le '
-         'nombre de points à générer et le nom du fichier de sortie.')
+# if len(sys.argv) <= 1:
+#     exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le '
+#          'nombre de points à générer et le nom du fichier de sortie.')
+#
+# if len(sys.argv) > 2:
+#     exit('Erreur: Trop d\'arguments.')
+#
+# try:
+#     algo_name = str(sys.argv[1])
+# except:
+#     exit('Erreur: Le premier argument (nombre de points) doit être un entier positif.')
 
-if len(sys.argv) > 2:
-    exit('Erreur: Trop d\'arguments.')
 
-try:
-    algo_name = str(sys.argv[1])
-except:
-    exit('Erreur: Le premier argument (nombre de points) doit être un entier positif.')
-
-
-data_file_name = "generated_data_" + algo_name + ".txt"
+data_file_name = "generated_data_5millions" + algo_name + ".txt"
 
 with open(data_file_name, "w") as file:
     file.write(algo_name + "\n")
