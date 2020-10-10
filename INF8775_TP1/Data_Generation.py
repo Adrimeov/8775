@@ -5,7 +5,7 @@ from gen import generate_samples
 
 
 NB_REPETITIONS = 3
-MAX_SAMPLES = 500000000
+MAX_SAMPLES = 1000000
 SAMPLES_FILE_NAME = "samples.txt"
 
 nb_samples = 100
@@ -14,7 +14,7 @@ sample_time_pairs = []
 
 
 algo = None
-algo_name = "brute"
+algo_name = "recursif"
 
 # if len(sys.argv) <= 1:
 #     exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le '
@@ -29,7 +29,7 @@ algo_name = "brute"
 #     exit('Erreur: Le premier argument (nombre de points) doit être un entier positif.')
 
 
-data_file_name = "generated_data_5millions" + algo_name + ".txt"
+data_file_name = algo_name + "_seuil_300_.txt"
 
 with open(data_file_name, "w") as file:
     file.write(algo_name + "\n")
@@ -42,7 +42,7 @@ with open(data_file_name, "w") as file:
         for i in range(NB_REPETITIONS):
             # Generating new samples each iterations
             generate_samples(nb_samples, SAMPLES_FILE_NAME)
-            average_time += execute_closest_points(SAMPLES_FILE_NAME, algo_name)
+            average_time += execute_closest_points(SAMPLES_FILE_NAME, algo_name, recursion=300)
 
         average_time /= NB_REPETITIONS
         print(str(nb_samples) + " " + str(average_time))

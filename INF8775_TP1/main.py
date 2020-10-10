@@ -1,7 +1,5 @@
 import sys
 import argparse
-from closest_points.brute_force import execute_brute_force
-from closest_points.DpR import execute_DpR
 from copy import deepcopy
 import closest
 import time
@@ -46,7 +44,7 @@ def execute_closest_points(path=None, algo="brute", timer=False, distance=False,
     if bool(timer):
         print("Time to compute: " + str(total_time) + "s")
     if distance:
-        print("Minimal distance: " + str(min_dpr) + "s")
+        print("Minimal distance: " + str(min_dpr))
 
     return total_time
 
