@@ -1,5 +1,6 @@
 import argparse
 import sys
+from glouton import Glouton
 
 
 def read_samples(filepath):
@@ -12,8 +13,17 @@ def read_samples(filepath):
     return blocks
 
 
-if __name__ == "__main__":
+def generate_blocks(samples):
+    samples.sort(key=lambda tup: ((tup[1] * tup[2]) * (tup[1] / tup[2])), reverse=True)
+    blocks = []
 
+    for sample in samples:
+        blocks.append(Glouton.Bloc(sample[0], sample[1], sample[2]))
+
+    return blocks
+
+
+if __name__ == "__main__":
     if len(sys.argv) <= 1:
         exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le \
               nombre de points à générer et le nom du fichier de sortie.')
@@ -28,7 +38,5 @@ if __name__ == "__main__":
     args_as_dict = vars(args)
     parameters = {a: vars(args)[a] for a in vars(args) if vars(args)[a] != ""}
 
-    blocks = read_samples(parameters['path'])
-    blocks.sort(key=lambda tup: (tup[1] * tup[2]) + tup[0], reverse=True)
-
-    print(blocks)
+    samples = read_samples(parameters['path'])
+    blocks = generate_blocks(samples)
