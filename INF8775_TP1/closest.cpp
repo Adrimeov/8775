@@ -1,5 +1,4 @@
 #include <iostream>
-#include <iostream>
 #include <cfloat>
 #include <cstdlib>
 #include <cmath>

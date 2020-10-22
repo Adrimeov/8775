@@ -1,6 +1,7 @@
 import argparse
 import sys
-from glouton import Glouton
+from customLib import Glouton
+import time
 
 
 def read_samples(filepath):
@@ -24,19 +25,22 @@ def generate_blocks(samples):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) <= 1:
-        exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le \
-              nombre de points à générer et le nom du fichier de sortie.')
-
-    arguments = ["--path", "--timer", "--algo", "--distance"]
-    parser = argparse.ArgumentParser()
-
-    for argument in arguments:
-        parser.add_argument(argument)
-
-    args = parser.parse_args()
-    args_as_dict = vars(args)
-    parameters = {a: vars(args)[a] for a in vars(args) if vars(args)[a] != ""}
+    # if len(sys.argv) <= 1:
+    #     exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le \
+    #           nombre de points à générer et le nom du fichier de sortie.')
+    #
+    # arguments = ["--path", "--timer", "--algo", "--distance"]
+    # parser = argparse.ArgumentParser()
+    #
+    # for argument in arguments:
+    #     parser.add_argument(argument)
+    #
+    # args = parser.parse_args()
+    # args_as_dict = vars(args)
+    # parameters = {a: vars(args)[a] for a in vars(args) if vars(args)[a] != ""}
 
     samples = read_samples(parameters['path'])
     blocks = generate_blocks(samples)
+    solution, hauteur = Glouton.algo_glouton(blocks)
+
+
