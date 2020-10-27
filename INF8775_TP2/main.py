@@ -1,6 +1,6 @@
 import argparse
 import sys
-from customLib import Glouton
+from customLib import CustomLib
 import time
 
 
@@ -19,7 +19,7 @@ def generate_blocks(samples):
     blocks = []
 
     for sample in samples:
-        blocks.append(Glouton.Bloc(sample[0], sample[1], sample[2]))
+        blocks.append(CustomLib.Bloc(sample[0], sample[1], sample[2]))
 
     return blocks
 
@@ -41,6 +41,6 @@ if __name__ == "__main__":
 
     samples = read_samples(parameters['path'])
     blocks = generate_blocks(samples)
-    solution, hauteur = Glouton.algo_glouton(blocks)
+    solution, hauteur = CustomLib.algo_glouton(blocks)
 
 
