@@ -4,6 +4,28 @@ from customLib import CustomLib
 import time
 
 
+# tp.sh -a [vorace | progdyn | tabou] -e [path_vers_exemplaire]
+def construct_tower(path=None, algo="vorace", timer=False, solution=False):
+    algo_dictionary = {"vorace": CustomLib.algo_glouton,
+                       "progdyn": CustomLib.algo_dynamic,
+                       "tabou": CustomLib.algo_tabu}
+
+    samples = read_samples(parameters['path'])
+    blocks = generate_blocks(samples)
+
+    start = time.time()
+    hauteur = algo_dictionary[algo](blocks)
+    end = time.time()
+    total_time = end - start
+
+    if bool(timer):
+        print("Time to compute: " + str(total_time) + "s")
+
+    if solution:
+        print("salut")
+    return hauteur
+
+
 def read_samples(filepath):
     blocks = []
 
@@ -26,10 +48,9 @@ def generate_blocks(samples):
 
 if __name__ == "__main__":
     if len(sys.argv) <= 1:
-        exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le \
-              nombre de points à générer et le nom du fichier de sortie.')
+        exit('Erreur: Pas assez d\'arguments.')
 
-    arguments = ["--path", "--timer", "--algo", "--distance"]
+    arguments = ["--path", "--timer", "--algo", "--solution"]
     parser = argparse.ArgumentParser()
 
     for argument in arguments:
@@ -39,24 +60,25 @@ if __name__ == "__main__":
     args_as_dict = vars(args)
     parameters = {a: vars(args)[a] for a in vars(args) if vars(args)[a] != ""}
 
-    samples = read_samples(parameters['path'])
-    blocks = generate_blocks(samples)
-
-    sum = 0
-    for bloc in blocks:
-        sum += bloc.getH()
-        # print(f"Bloc({bloc.getH()}, {bloc.getL()}, {bloc.getP()}),")
-
-    print(sum)
-
-    start = time.time()
-    hauteur = CustomLib.algo_tabu(blocks)
-    print(f"tabu: {hauteur} - {time.time() - start}")
-
-    start = time.time()
-    hauteur = CustomLib.algo_glouton(blocks)
-    print(f"glouton: {hauteur} - {time.time() - start}")
-
-    start = time.time()
-    hauteur = CustomLib.algo_dynamic(blocks)
-    print(f"dynamic: {hauteur} - {time.time() - start}")
+    construct_tower(**parameters)
+    # samples = read_samples(parameters['path'])
+    # blocks = generate_blocks(samples)
+    #
+    # sum = 0
+    # for bloc in blocks:
+    #     sum += bloc.getH()
+    #     # print(f"Bloc({bloc.getH()}, {bloc.getL()}, {bloc.getP()}),")
+    #
+    # print(sum)
+    #
+    # start = time.time()
+    # hauteur = CustomLib.algo_tabu(blocks)
+    # print(f"tabu: {hauteur} - {time.time() - start}")
+    #
+    # start = time.time()
+    # hauteur = CustomLib.algo_glouton(blocks)
+    # print(f"glouton: {hauteur} - {time.time() - start}")
+    #
+    # start = time.time()
+    # hauteur = CustomLib.algo_dynamic(blocks)
+    # print(f"dynamic: {hauteur} - {time.time() - start}")
