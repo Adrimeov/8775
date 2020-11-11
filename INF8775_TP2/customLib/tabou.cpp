@@ -56,6 +56,9 @@ int FindPositionFromTop(list<Bloc> solution, Bloc candidate) {
     for (auto itr = solution.rbegin(); itr != solution.rend(); itr++, position--){
         if (itr->getL() > candidate.getL() && itr->getP() > candidate.getP())
             return position;
+
+        if (position == 1 && itr->getL() < candidate.getL() && itr->getP() < candidate.getP())
+            return 0;
     }
 
     return -1;
@@ -82,7 +85,7 @@ void InsertCandidate(list<Bloc> &solution, list<Bloc> &tabu, Bloc candidate, int
     uniform_int_distribution<int> distribution(7, 10);
 
     for (; itr != solution.end();) {
-        if (itr->getL() < candidate.getL() && itr->getP() < candidate.getP()) {
+        if (itr->getL() > candidate.getL() && itr->getP() > candidate.getP()) {
             itr->setCounter(distribution(generator));
             tabu.push_back(*itr);
             itr = solution.erase(itr);
@@ -108,6 +111,11 @@ int TabuSearch(list<Bloc> candidates){
     while (heuristic_counter < 100) {
         heuristic_counter++;
         UpdateTabu(tabu, candidates);
+
+        if (candidates.empty()) {
+            heuristic_counter++;
+            continue;
+        }
 
         unsigned long long best_height = 0;
         Bloc best_candidate;
