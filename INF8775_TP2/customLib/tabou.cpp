@@ -139,8 +139,6 @@ int TabuSearch(list<Bloc> candidates){
         InsertCandidate(local_solution, tabu, best_candidate, best_candidate_position);
         candidates.remove(best_candidate);
 
-        cout << "New height: " << best_height << endl;
-
         if (CalculateHeight(global_solution) < best_height) {
             global_solution = list<Bloc>(local_solution);
             heuristic_counter = 0;
