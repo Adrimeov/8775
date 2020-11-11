@@ -40,7 +40,7 @@ struct Bloc
 };
 
 
-tuple<vector<Bloc>, int> algo_glouton(vector<Bloc> B) {
+int algo_glouton(vector<Bloc> B) {
     // On assume que la liste est trier
     int hauteur = 0;
     int index = 1; 
@@ -59,11 +59,10 @@ tuple<vector<Bloc>, int> algo_glouton(vector<Bloc> B) {
         index++;
     }
 
-
-    return make_tuple(solution, hauteur);
+    return hauteur;
 }
 
-int algo_dynamic(vector<Bloc> B) 
+int algo_dynamic(vector<Bloc> B)
 {
     int number_of_bloc = B.size();
     int max_stack_height[number_of_bloc];
@@ -129,13 +128,13 @@ unsigned long long CalculatePotentialHeight(list<Bloc> solution, Bloc candidate,
 void InsertCandidate(list<Bloc> &solution, list<Bloc> &tabu, Bloc candidate, int insertPosition) {
     auto itr = solution.begin();
     advance(itr, insertPosition);
-    solution.insert(itr++, candidate);
+    solution.insert(itr, candidate);
 
     default_random_engine generator;
     uniform_int_distribution<int> distribution(7, 10);
 
     for (; itr != solution.end();) {
-        if (itr->getL() > candidate.getL() && itr->getP() > candidate.getP()) {
+        if (itr->getL() >= candidate.getL() || itr->getP() >= candidate.getP()) {
             itr->setCounter(distribution(generator));
             tabu.push_back(*itr);
             itr = solution.erase(itr);
@@ -188,6 +187,7 @@ int TabuSearch(list<Bloc> candidates){
 
         InsertCandidate(local_solution, tabu, best_candidate, best_candidate_position);
         candidates.remove(best_candidate);
+
 
         if (CalculateHeight(global_solution) < best_height) {
             global_solution = list<Bloc>(local_solution);

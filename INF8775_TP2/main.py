@@ -25,22 +25,38 @@ def generate_blocks(samples):
 
 
 if __name__ == "__main__":
-    # if len(sys.argv) <= 1:
-    #     exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le \
-    #           nombre de points à générer et le nom du fichier de sortie.')
-    #
-    # arguments = ["--path", "--timer", "--algo", "--distance"]
-    # parser = argparse.ArgumentParser()
-    #
-    # for argument in arguments:
-    #     parser.add_argument(argument)
-    #
-    # args = parser.parse_args()
-    # args_as_dict = vars(args)
-    # parameters = {a: vars(args)[a] for a in vars(args) if vars(args)[a] != ""}
+    if len(sys.argv) <= 1:
+        exit('Erreur: Pas assez d\'arguments. Vous devez indiquer le \
+              nombre de points à générer et le nom du fichier de sortie.')
+
+    arguments = ["--path", "--timer", "--algo", "--distance"]
+    parser = argparse.ArgumentParser()
+
+    for argument in arguments:
+        parser.add_argument(argument)
+
+    args = parser.parse_args()
+    args_as_dict = vars(args)
+    parameters = {a: vars(args)[a] for a in vars(args) if vars(args)[a] != ""}
 
     samples = read_samples(parameters['path'])
     blocks = generate_blocks(samples)
-    solution, hauteur = CustomLib.algo_glouton(blocks)
 
+    sum = 0
+    for bloc in blocks:
+        sum += bloc.getH()
+        # print(f"Bloc({bloc.getH()}, {bloc.getL()}, {bloc.getP()}),")
 
+    print(sum)
+
+    start = time.time()
+    hauteur = CustomLib.algo_tabu(blocks)
+    print(f"tabu: {hauteur} - {time.time() - start}")
+
+    start = time.time()
+    hauteur = CustomLib.algo_glouton(blocks)
+    print(f"glouton: {hauteur} - {time.time() - start}")
+
+    start = time.time()
+    hauteur = CustomLib.algo_dynamic(blocks)
+    print(f"dynamic: {hauteur} - {time.time() - start}")
