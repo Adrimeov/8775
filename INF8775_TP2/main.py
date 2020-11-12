@@ -14,7 +14,7 @@ def construct_tower(path=None, algo="vorace", timer=False, solution=False):
     blocks = generate_blocks(samples)
 
     start = time.time()
-    hauteur = algo_dictionary[algo](blocks)
+    hauteur, tower = algo_dictionary[algo](blocks)
     end = time.time()
     total_time = end - start
 
@@ -22,7 +22,8 @@ def construct_tower(path=None, algo="vorace", timer=False, solution=False):
         print("Time to compute: " + str(total_time) + "s")
 
     if solution:
-        print("salut")
+        for bloc in tower:
+            print(f"{bloc.getH()}, {bloc.getL()}, {bloc.getP()}")
     return hauteur
 
 

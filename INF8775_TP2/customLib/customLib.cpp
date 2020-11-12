@@ -40,7 +40,7 @@ struct Bloc
 };
 
 
-int algo_glouton(vector<Bloc> B) {
+tuple<int, vector<Bloc>> algo_glouton(vector<Bloc> B) {
     // On assume que la liste est trier
     int hauteur = 0;
     int index = 1; 
@@ -59,30 +59,46 @@ int algo_glouton(vector<Bloc> B) {
         index++;
     }
 
-    return hauteur;
+    return make_tuple(hauteur, solution);
 }
 
-int algo_dynamic(vector<Bloc> B)
+tuple<int, list<Bloc>> algo_dynamic(vector<Bloc> B)
 {
     int number_of_bloc = B.size();
     int max_stack_height[number_of_bloc];
+    int retrace_array[number_of_bloc] = {-1};
 
     for( int i = 0; i < number_of_bloc; i++)
     {
         max_stack_height[i] = B[i].getH();
     }
+
     for (int i = 1; i < number_of_bloc; i++ ) 
-        for (int j = 0; j < i; j++ ) 
+        for (int j = 0; j < i; j++ )
             if ( B[i].getL() < B[j].getL() && B[i].getP() < B[j].getP() && max_stack_height[i] < max_stack_height[j] + B[i].getH()) 
             { 
-                max_stack_height[i] = max_stack_height[j] + B[i].getH(); 
-            } 
-    int max = -1; 
+                max_stack_height[i] = max_stack_height[j] + B[i].getH();
+                retrace_array[i] = j;
+            }
+
+    int max = -1;
+    int retrace_index = -1;
+
     for ( int i = 0; i < number_of_bloc; i++ ) 
-      if ( max < max_stack_height[i] ) 
-         max = max_stack_height[i]; 
-  
-   return max;
+        if ( max < max_stack_height[i] )
+        {
+            max = max_stack_height[i];
+            retrace_index = i;
+        }
+
+    list<Bloc> solution;
+
+    while (retrace_index != -1) {
+        solution.push_front(B[retrace_index]);
+        retrace_index = retrace_array[retrace_index];
+    }
+
+   return make_tuple(max, solution);
 }
 
 void UpdateTabu(list<Bloc> &tabu_list, list<Bloc> &candidates) {
@@ -150,7 +166,7 @@ unsigned long long CalculateHeight(list<Bloc> solution) {
     return height;
 }
 
-int TabuSearch(list<Bloc> candidates){
+tuple<int, list<Bloc>> TabuSearch(list<Bloc> candidates){
 
     int heuristic_counter = 0;
     list<Bloc> global_solution;
@@ -195,7 +211,7 @@ int TabuSearch(list<Bloc> candidates){
         }
     }
 
-    return CalculateHeight(global_solution);
+    return make_tuple(CalculateHeight(global_solution), global_solution);
 }
 
 
