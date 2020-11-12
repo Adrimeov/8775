@@ -15,6 +15,7 @@ def generate_data(algo):
 
     files = [f for f in listdir(data_dir) if isfile(join(data_dir, f))]
     sample_sizes = [100, 500, 1000, 5000, 10000, 50000, 100000]
+    # sample_sizes = [100, 500, 1000]
 
     for sample_size in sample_sizes:
         target_files_name = f"b{sample_size}_"
@@ -36,6 +37,9 @@ def generate_data(algo):
 
         mean_time = mean_time / len(target_files)
         mean_height = mean_height / len(target_files)
+
+        print(f"Sample size: {sample_size}, mean time: {mean_time}, "
+              f"estimated time: {mean_time * 10}, mean height: {mean_height}")
 
         with open(join("./results", f"mean_results_{algo}.txt"), "a") as f:
             f.write(f"{sample_size}\t{mean_time}\t{mean_height}\n")
