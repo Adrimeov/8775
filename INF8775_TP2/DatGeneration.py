@@ -7,6 +7,15 @@ from os.path import isfile, join
 from customLib import CustomLib
 
 
+def verify_tower(solution):
+    for i in range(len(solution) -1):
+        bloc_1 = solution[i]
+        bloc_2 = solution[i + 1]
+        if not (bloc_1.getP() > bloc_2.getP() and bloc_1.getL() > bloc_2.getL()):
+            raise Exception
+
+
+
 def generate_data(algo):
     algo_dictionary = {"vorace": CustomLib.algo_glouton,
                        "progdyn": CustomLib.algo_dynamic,
@@ -31,6 +40,7 @@ def generate_data(algo):
             start = time.time()
             hauteur, tower = algo_dictionary[algo](blocs)
             total_time = time.time() - start
+            verify_tower(tower)
 
             mean_time += total_time
             mean_height += hauteur
@@ -41,8 +51,8 @@ def generate_data(algo):
         print(f"Sample size: {sample_size}, mean time: {mean_time}, "
               f"estimated time: {mean_time * 10}, mean height: {mean_height}")
 
-        with open(join("./results", f"mean_results_{algo}.txt"), "a") as f:
-            f.write(f"{sample_size}\t{mean_time}\t{mean_height}\n")
+        # with open(join("./results", f"mean_results_{algo}.txt"), "a") as f:
+        #     f.write(f"{sample_size}\t{mean_time}\t{mean_height}\n")
 
 
 def read_samples(filepath):
