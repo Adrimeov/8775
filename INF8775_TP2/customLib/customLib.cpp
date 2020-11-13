@@ -145,7 +145,7 @@ int FindPositionFromTop(list<Bloc> solution, Bloc candidate) {
         if (itr->getL() > candidate.getL() && itr->getP() > candidate.getP())
             return position;
 
-        if (position == 1 && itr->getL() < candidate.getL() && itr->getP() < candidate.getP())
+        if (position == 1)
             return 0;
     }
 
@@ -213,7 +213,10 @@ tuple<int, list<Bloc>> TabuSearch(list<Bloc> candidates){
 
             int insert_position = FindPositionFromTop(local_solution.tower, candidate);
 
-            if (insert_position == -1) continue;
+            if (insert_position == -1) {
+                candidates.push_back(candidate);
+                continue;
+            }
 
             unsigned long long potential_height = CalculatePotentialHeight(local_solution, candidate, insert_position);
 
