@@ -61,7 +61,8 @@ if __name__ == "__main__":
     args_as_dict = vars(args)
     parameters = {a: vars(args)[a] for a in vars(args) if vars(args)[a] != ""}
 
-    construct_tower(**parameters)
+    height = construct_tower(**parameters)
+    print(height)
     # samples = read_samples(parameters['path'])
     # blocks = generate_blocks(samples)
     #
