@@ -14,7 +14,7 @@ struct Bloc
     Bloc(unsigned long long h, unsigned long long l, unsigned long long p): h(h), l(l), p(p) {}
     Bloc(): h(0), l(0), p(0) {}
 
-    bool operator==(Bloc const& other) {
+    bool operator==(Bloc const& other) const {
         bool equal = true;
 
         if (h != other.h) equal = false;
@@ -66,7 +66,8 @@ tuple<int, list<Bloc>> algo_dynamic(vector<Bloc> B)
 {
     int number_of_bloc = B.size();
     int max_stack_height[number_of_bloc];
-    int retrace_array[number_of_bloc] = {-1};
+    vector<int> retrace_array (number_of_bloc, -1);
+
 
     for( int i = 0; i < number_of_bloc; i++)
     {
