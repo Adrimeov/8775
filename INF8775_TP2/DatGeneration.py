@@ -24,7 +24,7 @@ def generate_data(algo):
 
     files = [f for f in listdir(data_dir) if isfile(join(data_dir, f))]
     sample_sizes = [100, 500, 1000, 5000, 10000, 50000, 100000]
-    # sample_sizes = [100, 500, 1000]
+    # sample_sizes = [100, 500, 1000, 5000]
 
     for sample_size in sample_sizes:
         target_files_name = f"b{sample_size}_"

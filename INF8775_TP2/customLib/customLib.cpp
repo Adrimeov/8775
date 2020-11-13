@@ -39,6 +39,27 @@ struct Bloc
     int counter = 0;
 };
 
+struct Solution
+{
+    Solution() = default;
+
+    Solution(const Solution &other) {
+        this->tower = list<Bloc>(other.tower);
+        this->height = other.height;
+    }
+
+public:
+    list<Bloc> tower = list<Bloc>();
+    unsigned long long height = 0;
+
+    void SetTower(list<Bloc> &_tower)
+    {
+        this->tower = _tower;
+
+        for (auto itr : this->tower)
+            this->height += itr.getH();
+    }
+};
 
 tuple<int, vector<Bloc>> algo_glouton(vector<Bloc> B) {
     // On assume que la liste est trier
@@ -102,6 +123,7 @@ tuple<int, list<Bloc>> algo_dynamic(vector<Bloc> B)
    return make_tuple(max, solution);
 }
 
+
 void UpdateTabu(list<Bloc> &tabu_list, list<Bloc> &candidates) {
     for (auto itr = tabu_list.begin(); itr != tabu_list.end();){
         itr->setCounter(itr->counter - 1);
@@ -123,55 +145,52 @@ int FindPositionFromTop(list<Bloc> solution, Bloc candidate) {
         if (itr->getL() > candidate.getL() && itr->getP() > candidate.getP())
             return position;
 
-        if (position == 1 && itr->getL() < candidate.getL() && itr->getP() < candidate.getP())
+        if (position == 1)
             return 0;
     }
 
     return -1;
 }
 
-unsigned long long CalculatePotentialHeight(list<Bloc> solution, Bloc candidate, int insertPosition) {
-    unsigned long long height = candidate.getH();
-    int position = 0;
+unsigned long long CalculatePotentialHeight(Solution &solution, Bloc candidate, int insertPosition) {
+    unsigned long long delta_h = candidate.getH();
+    auto itr = solution.tower.begin();
+    advance(itr, insertPosition);
 
-    for (auto itr = solution.begin(); itr != solution.end(); itr++, position++) {
-        if (position < insertPosition || (itr->getL() < candidate.getL() && itr->getP() < candidate.getP()))
-            height += itr->getH();
+    for (; itr != solution.tower.end(); itr++) {
+        if (itr->getL() >= candidate.getL() || itr->getP() >= candidate.getP())
+            delta_h -= itr->getH();
+        else
+            return solution.height + delta_h;
     }
 
-    return height;
+    return solution.height + delta_h;
 }
 
-void InsertCandidate(list<Bloc> &solution, list<Bloc> &tabu, Bloc candidate, int insertPosition) {
-    auto itr = solution.begin();
+void InsertCandidate(Solution &solution, list<Bloc> &tabu, Bloc candidate, int insertPosition) {
+    auto itr = solution.tower.begin();
     advance(itr, insertPosition);
-    solution.insert(itr, candidate);
+    solution.tower.insert(itr, candidate);
+    solution.height += candidate.getH();
 
     default_random_engine generator;
     uniform_int_distribution<int> distribution(7, 10);
 
-    for (; itr != solution.end();) {
+    for (; itr != solution.tower.end();) {
         if (itr->getL() >= candidate.getL() || itr->getP() >= candidate.getP()) {
             itr->setCounter(distribution(generator));
             tabu.push_back(*itr);
-            itr = solution.erase(itr);
-        } else itr++;
+            solution.height -= itr->getH();
+            itr = solution.tower.erase(itr);
+        } else return;
     }
-}
-
-unsigned long long CalculateHeight(list<Bloc> solution) {
-    unsigned long long height = 0;
-
-    for (auto itr : solution) height += itr.getH();
-
-    return height;
 }
 
 tuple<int, list<Bloc>> TabuSearch(list<Bloc> candidates){
 
     int heuristic_counter = 0;
-    list<Bloc> global_solution;
-    list<Bloc> local_solution;
+    Solution global_solution;
+    Solution local_solution;
     list<Bloc> tabu;
 
     while (heuristic_counter < 100) {
@@ -186,34 +205,42 @@ tuple<int, list<Bloc>> TabuSearch(list<Bloc> candidates){
         unsigned long long best_height = 0;
         Bloc best_candidate;
         int best_candidate_position = -1;
+        int number_of_candidates = candidates.size();
 
-        for (auto candidate : candidates) {
-            int insert_position = FindPositionFromTop(local_solution, candidate);
+        for (int i = 0; i < number_of_candidates; i++) {
+            Bloc candidate = candidates.front();
+            candidates.pop_front();
 
-            if (insert_position == -1) continue;
+            int insert_position = FindPositionFromTop(local_solution.tower, candidate);
+
+            if (insert_position == -1) {
+                candidates.push_back(candidate);
+                continue;
+            }
 
             unsigned long long potential_height = CalculatePotentialHeight(local_solution, candidate, insert_position);
 
             if (potential_height > best_height) {
+                if (best_candidate.getH() > 0) // To avoid adding empty bloc on first iteration
+                    candidates.push_back(best_candidate);
                 best_height = potential_height;
                 best_candidate = candidate;
                 best_candidate_position = insert_position;
-            }
-//            TODO: struct pour solution afin d'eviter literation pour le calul de hauteur
+            } else
+                candidates.push_back(candidate);
         }
 
         InsertCandidate(local_solution, tabu, best_candidate, best_candidate_position);
-        candidates.remove(best_candidate);
 
-
-        if (CalculateHeight(global_solution) < best_height) {
-            global_solution = list<Bloc>(local_solution);
+        if (global_solution.height < best_height) {
+            global_solution = Solution(local_solution);
             heuristic_counter = 0;
         }
     }
 
-    return make_tuple(CalculateHeight(global_solution), global_solution);
+    return make_tuple(global_solution.height, global_solution.tower);
 }
+
 
 
 PYBIND11_MODULE(CustomLib, m) {
