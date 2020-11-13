@@ -8,7 +8,7 @@ while getopts ":a:e:pt" opt; do
     ;;
     e) path="$OPTARG"
     ;;
-    p) solution="True"
+    p) solution="False"
     ;;
     t) time="True"
     ;;
