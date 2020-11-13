@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 result_folder = "results"
 result_files_names = ["mean_results_progdyn.txt",
-                      "mean_results_tabou.txt",
+                        "mean_results_tabou.txt",
                       "mean_results_vorace.txt"]
 
 result_matrix = np.zeros((3, 7, 2))
@@ -20,8 +20,8 @@ for matrix_index, file in enumerate(result_files_names):
 
 
 table_title_name = ["Temps d'éxécution moyen en seconde pour chaque "
-                    "\n algorithme selon la taille d'échantillon",
-                    "Hauteur de tour moyenne pour chaque algorithme selon la taille d'échantillon"]
+                    "\nalgorithme selon la taille d'échantillon",
+                    "Hauteur de tour moyenne pour chaque\nalgorithme selon la taille d'échantillon"]
 
 for i in range(2):
     val1 = ["ProgDyn", "Tabou", "Vorace"]
@@ -29,7 +29,7 @@ for i in range(2):
     val3 = np.round(result_matrix[:, :, i].T, 5)
 
 
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(figsize=(7,2))
     ax.set_axis_off()
     table = ax.table(
         cellText=val3,

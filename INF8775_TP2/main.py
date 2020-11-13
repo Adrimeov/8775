@@ -4,10 +4,20 @@ from customLib import CustomLib
 import time
 
 
-# tp.sh -a [vorace | progdyn | tabou] -e [path_vers_exemplaire]
+def algo_dynamic(blocks):
+    blocks_ = sort_blocks(blocks)
+    return CustomLib.algo_dynamic(blocks_)
+
+
+def algo_glouton(blocks):
+    blocks_ = sort_blocks(blocks)
+    return CustomLib.algo_glouton(blocks_)
+
+
 def construct_tower(path=None, algo="vorace", timer=False, solution=False):
-    algo_dictionary = {"vorace": CustomLib.algo_glouton,
-                       "progdyn": CustomLib.algo_dynamic,
+    # tp.sh -a [vorace | progdyn | tabou] -e [path_vers_exemplaire]
+    algo_dictionary = {"vorace": algo_glouton,
+                       "progdyn": algo_dynamic,
                        "tabou": CustomLib.algo_tabu}
 
     samples = read_samples(parameters['path'])
@@ -28,6 +38,7 @@ def construct_tower(path=None, algo="vorace", timer=False, solution=False):
 
 
 def read_samples(filepath):
+
     blocks = []
 
     with open(filepath, 'r') as file:
@@ -37,8 +48,12 @@ def read_samples(filepath):
     return blocks
 
 
+def sort_blocks(blocks):
+    blocks.sort(key=lambda block: (block.getL() * block.getP()), reverse=True)
+    return blocks
+
+
 def generate_blocks(samples):
-    samples.sort(key=lambda tup: ((tup[1] * tup[2]) * (tup[1] / tup[2])), reverse=True)
     blocks = []
 
     for sample in samples:
@@ -63,24 +78,5 @@ if __name__ == "__main__":
 
     height = construct_tower(**parameters)
     print(height)
-    # samples = read_samples(parameters['path'])
-    # blocks = generate_blocks(samples)
-    #
-    # sum = 0
-    # for bloc in blocks:
-    #     sum += bloc.getH()
-    #     # print(f"Bloc({bloc.getH()}, {bloc.getL()}, {bloc.getP()}),")
-    #
-    # print(sum)
-    #
-    # start = time.time()
-    # hauteur = CustomLib.algo_tabu(blocks)
-    # print(f"tabu: {hauteur} - {time.time() - start}")
-    #
-    # start = time.time()
-    # hauteur = CustomLib.algo_glouton(blocks)
-    # print(f"glouton: {hauteur} - {time.time() - start}")
-    #
-    # start = time.time()
-    # hauteur = CustomLib.algo_dynamic(blocks)
-    # print(f"dynamic: {hauteur} - {time.time() - start}")
+
+
