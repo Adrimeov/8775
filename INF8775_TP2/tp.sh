@@ -8,7 +8,6 @@ while getopts ":a:e:pt" opt; do
     ;;
     e) path="$OPTARG"
     ;;
-#  affiche la solution
     p) solution="True"
     ;;
     t) time="True"
@@ -18,6 +17,6 @@ while getopts ":a:e:pt" opt; do
   esac
 done
 
-python3 ./main.py --path "$path" --time "$time" --algo "$algo" --solution "$distance"
+python3 ./main.py --path "$path" --time "$time" --algo "$algo" --solution "$solution"
 
 

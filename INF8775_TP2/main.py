@@ -26,10 +26,10 @@ def construct_tower(path=None, algo="vorace", timer=False, solution=False):
     start = time.time()
     hauteur, tower = algo_dictionary[algo](blocks)
     end = time.time()
-    total_time = end - start
+    total_time = (end - start) * 1000
 
     if bool(timer):
-        print("Time to compute: " + str(total_time) + "s")
+        print("Time to compute: " + str(total_time) + "ms")
 
     if solution:
         for bloc in tower:
@@ -75,8 +75,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     args_as_dict = vars(args)
     parameters = {a: vars(args)[a] for a in vars(args) if vars(args)[a] != ""}
-
     height = construct_tower(**parameters)
-    print(height)
+
 
 
