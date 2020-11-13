@@ -60,7 +60,7 @@ public:
             this->height += itr.getH();
     }
 };
-
+// Algorithme Glouton
 tuple<int, vector<Bloc>> algo_glouton(vector<Bloc> B) {
     // On assume que la liste est trier
     int hauteur = 0;
@@ -83,6 +83,7 @@ tuple<int, vector<Bloc>> algo_glouton(vector<Bloc> B) {
     return make_tuple(hauteur, solution);
 }
 
+// Algorithme Dynamic
 tuple<int, list<Bloc>> algo_dynamic(vector<Bloc> B)
 {
     int number_of_bloc = B.size();
@@ -123,7 +124,7 @@ tuple<int, list<Bloc>> algo_dynamic(vector<Bloc> B)
    return make_tuple(max, solution);
 }
 
-
+// Algorithme Tabu
 void UpdateTabu(list<Bloc> &tabu_list, list<Bloc> &candidates) {
     for (auto itr = tabu_list.begin(); itr != tabu_list.end();){
         itr->setCounter(itr->counter - 1);
